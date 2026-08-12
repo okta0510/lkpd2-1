@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SMAN 10 BANDAR LAMPUNG <BR>LKPD — Algoritma dan Struktur Data </BR</title>
+<title>SMAN 10 Bandar Lampung — LKPD Algoritma dan Struktur Data</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap');
 
@@ -118,6 +118,33 @@ body{
 .eyebrow span.txt{ font-family:var(--font-display); font-size:12px; letter-spacing:.14em; color:var(--amber); text-transform:uppercase; }
 h1.page-title{ font-family:var(--font-display); font-size:clamp(26px,4vw,38px); margin:0 0 8px; line-height:1.15; }
 p.page-desc{ color:var(--text-dim); max-width:640px; line-height:1.65; margin:0 0 30px; font-size:15px;}
+
+.school-banner{
+  font-family:var(--font-display); font-size:11px; letter-spacing:.1em; color:var(--text-dim);
+  text-transform:uppercase; margin-bottom:6px;
+}
+.school-banner strong{ color:var(--amber); }
+
+.materi-box{
+  background:var(--paper); color:var(--ink); border-radius:14px;
+  padding:22px 26px; margin-bottom:22px; border:1px solid var(--paper-line);
+}
+.materi-box h3{
+  font-family:var(--font-display); font-size:15px; margin:0 0 10px;
+  display:flex; align-items:center; gap:8px; color:var(--ink);
+}
+.materi-box p{ font-size:13.5px; line-height:1.7; margin:0 0 10px; }
+.materi-box p:last-child{ margin-bottom:0; }
+.materi-box ul, .materi-box ol{ margin:0 0 10px; padding-left:20px; font-size:13.5px; line-height:1.7; }
+.materi-box strong{ color:var(--ink); }
+.materi-box table{ border-collapse:collapse; width:100%; margin:10px 0; font-size:12.5px; }
+.materi-box th, .materi-box td{ border:1px solid var(--paper-line); padding:6px 10px; text-align:left; }
+.materi-box th{ background:#eee5c9; font-family:var(--font-display); font-weight:700; font-size:11px; }
+.materi-tag{
+  display:inline-block; font-family:var(--font-display); font-size:10px; letter-spacing:.08em;
+  background:var(--amber); color:var(--amber-ink); padding:3px 10px; border-radius:999px;
+  text-transform:uppercase; margin-bottom:14px; font-weight:700;
+}
 
 h2.sec-title{
   font-family:var(--font-display); font-size:19px; margin:44px 0 6px;
@@ -294,8 +321,8 @@ pre.code{
 <div class="shell">
   <!-- ===================== SIDEBAR / TABS ===================== -->
   <nav class="rail" id="rail">
-    <div class="brand">LKPD // Bab 2</div>
-    <div class="brand-sub">Algoritma &amp; Struktur Data<br>Informatika Kelas X</div>
+    <div class="brand">SMAN 10 Bandar Lampung</div>
+    <div class="brand-sub">LKPD Bab 2 — Algoritma &amp; Struktur Data<br>Informatika Kelas X</div>
 
     <button class="tab active" data-tab="mulai"><span class="dot">•</span> Mulai</button>
     <button class="tab" data-tab="algoritma"><span class="dot">A</span> Algoritma &amp; Diagram Alir <span class="score-chip" id="chip-algoritma">0/7</span></button>
@@ -314,8 +341,9 @@ pre.code{
 
     <!-- ============ PANEL: MULAI ============ -->
     <section class="panel active" id="panel-mulai">
+      <div class="school-banner"><strong>SMAN 10 Bandar Lampung</strong> · Mata Pelajaran Informatika</div>
       <div class="eyebrow"><span class="fc-terminator">MULAI</span></div>
-      <h1 class="page-title">Lembar Kerja Peserta Didik SMAN 10 BANDAR LAMPUNG </h1>
+      <h1 class="page-title">Lembar Kerja Peserta Didik</h1>
       <p class="page-desc">Bab 2 — Algoritma dan Struktur Data. Kerjakan setiap bagian (A–D) dengan menjelajah lewat menu di samping. Setiap aktivitas langsung memberi umpan balik, dan skormu terkumpul otomatis di tab <strong>Hasil Akhir</strong>.</p>
 
       <div class="card">
@@ -344,6 +372,28 @@ pre.code{
       <h1 class="page-title">Algoritma &amp; Diagram Alir</h1>
       <p class="page-desc">Uji kemampuanmu menelusuri (tracing) diagram alir, lalu jawab beberapa pertanyaan konsep dasar.</p>
 
+      <div class="materi-box">
+        <span class="materi-tag">📘 Materi</span>
+        <h3>Apa itu Algoritma?</h3>
+        <p><strong>Algoritma</strong> adalah kumpulan instruksi yang <strong>terstruktur</strong> dan <strong>terbatas (finite)</strong>, yang dapat diimplementasikan dalam kehidupan sehari-hari maupun program komputer, untuk menyelesaikan masalah tertentu. Algoritma ibarat sebuah "resep" — lahir dari proses berpikir komputasional. Algoritma tidak harus berhubungan dengan pemrograman; resep masakan pun sudah termasuk algoritma.</p>
+        <p><strong>Beda algoritma dan program:</strong> algoritma ditulis agar mudah dipahami <strong>manusia</strong>, sedangkan program ditulis agar dapat dipahami dan dijalankan oleh <strong>mesin</strong>. Kemampuan membaca algoritma langkah demi langkah disebut <strong>penelusuran (tracing)</strong>.</p>
+
+        <h3>Diagram Alir (Flowchart)</h3>
+        <p>Diagram alir menggambarkan algoritma dalam bentuk simbol-simbol standar (ANSI/ISO) agar mudah dan cepat dipahami:</p>
+        <table>
+          <tr><th>Simbol</th><th>Nama</th><th>Fungsi</th></tr>
+          <tr><td>Oval</td><td>Terminator</td><td>Titik awal / akhir program</td></tr>
+          <tr><td>Persegi panjang</td><td>Proses</td><td>Operasi komputasi (aritmatika, dsb.)</td></tr>
+          <tr><td>Belah ketupat</td><td>Percabangan</td><td>Titik keputusan; memilih salah satu cabang</td></tr>
+          <tr><td>Jajaran genjang</td><td>Input/Output</td><td>Menerima data (READ) / mengeluarkan info (PRINT)</td></tr>
+          <tr><td>Persegi bertepi ganda</td><td>Subprogram</td><td>Proses lain yang sudah didefinisikan</td></tr>
+        </table>
+        <p><strong>Teknik tracing:</strong> buat tabel 3 kolom — Masukan, Nilai Variabel, Keluaran — lalu telusuri diagram alir simbol demi simbol untuk memeriksa apakah algoritmanya sudah benar.</p>
+
+        <h3>Pseudokode</h3>
+        <p>Pseudokode ("kode semu") menuliskan algoritma dengan gaya mirip bahasa pemrograman, tapi lebih longgar dan mudah dibaca manusia, tanpa harus mengikuti sintaks bahasa pemrograman tertentu. Pseudokode melengkapi diagram alir untuk algoritma yang panjang atau kompleks, yang jika digambar sebagai diagram alir akan terlalu besar/rumit.</p>
+      </div>
+
       <h2 class="sec-title"><span class="fc-icon fc-diamond"></span>Telusuri: Mencari Bilangan Terbesar</h2>
       <p class="sec-desc">Diagram alir ini membaca 4 buah bilangan satu per satu: <strong>1, 3, 2, 4</strong>, dan mencari nilai terbesarnya. Variabel <code>Terbesar</code> dimulai dari 0. Untuk tiap bilangan yang dibaca, tebak nilai <code>Terbesar</code> yang baru!</p>
 
@@ -366,6 +416,21 @@ pre.code{
       <div class="eyebrow"><span class="fc-terminator">BAGIAN B</span></div>
       <h1 class="page-title">Membuat Program Sesuai Struktur Kendalinya</h1>
       <p class="page-desc">Baca potongan kode, tebak keluarannya, dan rakit sendiri jejak sebuah fungsi rekursif.</p>
+
+      <div class="materi-box">
+        <span class="materi-tag">📘 Materi</span>
+        <h3>Empat Elemen Generik Bahasa Pemrograman</h3>
+        <p>Hampir semua bahasa pemrograman prosedural (contoh di bab ini: bahasa C) dibangun dari empat elemen generik, ditambah satu elemen pelengkap penting:</p>
+        <ol>
+          <li><strong>Variabel</strong> — tempat menyimpan nilai/data.</li>
+          <li><strong>Ekspresi</strong> — kombinasi operand + operator, misalnya <code>10 + 5</code>. Operator penugasan <code>=</code> berarti "isikan nilai kanan ke variabel kiri", berbeda dengan makna "sama dengan" di matematika. Urutan operasi: <code>()</code> → <code>* / %</code> → <code>+ -</code>. Operator <code>++</code>/<code>--</code> di depan variabel (prefix) mengubah nilai dulu baru dipakai; di belakang (postfix) memakai nilai dulu baru mengubah.</li>
+          <li><strong>Struktur Kontrol Percabangan</strong> — <code>if-else</code> dan <code>switch-case</code> untuk mengambil keputusan berdasarkan suatu kondisi. Percabangan bisa disarangkan (nested), tetapi harus hati-hati karena <code>else</code> selalu menempel ke <code>if</code> terdekat yang belum punya pasangan.</li>
+          <li><strong>Struktur Kontrol Perulangan</strong> — <code>for</code> dipakai saat jumlah iterasi sudah pasti; <code>while</code> mengecek kondisi di awal (badan loop bisa tidak pernah jalan); <code>do-while</code> mengecek kondisi di akhir (badan loop pasti jalan minimal sekali).</li>
+        </ol>
+        <h3>Fungsi</h3>
+        <p><strong>Fungsi</strong> adalah kumpulan pernyataan bertujuan tertentu yang dapat dipakai ulang (reusability) — bentuk abstraksi. Prototipe fungsi terdiri atas <strong>nama, parameter,</strong> dan <strong>nilai kembalian</strong>. Variabel yang dideklarasikan di dalam suatu fungsi bersifat lokal — hanya hidup di dalam fungsi tersebut.</p>
+        <p><strong>Fungsi rekursif</strong> adalah fungsi yang memanggil dirinya sendiri, dan wajib memiliki dua bagian: <strong>langkah basis</strong> (kondisi berhenti memanggil diri sendiri) dan <strong>langkah rekursif</strong> (memanggil diri sendiri sambil bergerak menuju langkah basis). Jika langkah rekursif tidak pernah mencapai langkah basis, program bisa berjalan tanpa henti.</p>
+      </div>
 
       <h2 class="sec-title"><span class="fc-icon fc-diamond"></span>Ekspresi — Tebak Keluaran</h2>
       <div class="card" id="quiz-ekspresi"></div>
@@ -390,6 +455,21 @@ pre.code{
       <h1 class="page-title">Simulasi Bubble Sort</h1>
       <p class="page-desc">Urutkan deret <strong>2, 3, 7, 6, 5</strong> secara menaik — persis seperti contoh di buku. Untuk setiap pasangan yang disorot, putuskan apakah perlu ditukar!</p>
 
+      <div class="materi-box">
+        <span class="materi-tag">📘 Materi</span>
+        <h3>Pencarian (Searching)</h3>
+        <p><strong>Pencarian</strong> adalah usaha menemukan "sesuatu" (benda, angka, konsep, informasi) yang memenuhi kriteria tertentu, dalam suatu ruang pencarian. Ada tiga elemen formalnya: (1) sekumpulan objek, (2) kriteria objek yang dicari, dan (3) cara pengecekan apakah objek memenuhi kriteria. Strategi pencarian yang baik bergantung pada kondisi data — mencari di data yang <strong>terurut</strong> jauh lebih mudah dan cepat daripada di data yang acak/berantakan.</p>
+
+        <h3>Pengurutan (Sorting)</h3>
+        <p><strong>Pengurutan</strong> adalah proses mengatur kelompok benda/objek mengikuti aturan tertentu (menaik/ascending atau menurun/descending). Ada dua langkah inti: <strong>pembandingan</strong> dua nilai, lalu <strong>penempatan</strong> (penukaran posisi) berdasarkan hasil pembandingan.</p>
+        <table>
+          <tr><th>Algoritma</th><th>Ide Dasar</th></tr>
+          <tr><td>Bubble Sort</td><td>Elemen "menggelembung" naik ke posisi seharusnya dengan menukar elemen-elemen berdekatan secara berulang. Satu iterasi penuh mendorong nilai terbesar ke posisi paling kanan.</td></tr>
+          <tr><td>Insertion Sort</td><td>Menyisipkan elemen satu per satu ke posisi yang tepat di antara elemen yang sudah terurut — mirip cara menyusun kartu remi di tangan.</td></tr>
+        </table>
+        <p>Contoh bubble sort menaik pada deret <strong>2, 3, 7, 6, 5</strong>: iterasi 1 → 2,3,6,5,7 &nbsp;·&nbsp; iterasi 2 → 2,3,5,6,7 &nbsp;·&nbsp; iterasi 3 dan 4 tidak ada perubahan lagi karena data sudah terurut. Total ada 4 iterasi dengan 4+3+2+1 = 10 kali perbandingan.</p>
+      </div>
+
       <div class="card">
         <div class="sort-status" id="sort-status">Memuat…</div>
         <div class="tiles" id="sort-tiles"></div>
@@ -403,6 +483,19 @@ pre.code{
       <div class="eyebrow"><span class="fc-terminator">BAGIAN D</span></div>
       <h1 class="page-title">Stack (Tumpukan) &amp; Queue (Antrean)</h1>
       <p class="page-desc">Pilih struktur data yang paling tepat untuk tiap situasi, lalu coba simulasikan PUSH dan POP sendiri.</p>
+
+      <div class="materi-box">
+        <span class="materi-tag">📘 Materi</span>
+        <h3>Struktur Data: Stack &amp; Queue</h3>
+        <p>Stack dan queue adalah dua cara menyimpan objek dalam urutan tertentu agar dapat diproses kembali nanti.</p>
+        <table>
+          <tr><th>Struktur</th><th>Prinsip</th><th>Analogi</th><th>Operasi Utama</th></tr>
+          <tr><td><strong>Queue (Antrean)</strong></td><td>First In First Out (FIFO)</td><td>Antrean di loket — yang pertama masuk, pertama keluar/dilayani</td><td>ENQUEUE (masuk), DEQUEUE (keluar)</td></tr>
+          <tr><td><strong>Stack (Tumpukan)</strong></td><td>Last In First Out (LIFO)</td><td>Tumpukan piring — yang terakhir diletakkan, pertama diambil</td><td>PUSH (masuk), POP (keluar)</td></tr>
+        </table>
+        <p>Contoh PUSH/POP: <code>PUSH 5 → PUSH 3 → PUSH 2 → PUSH 4 → POP (hasil: 4) → PUSH 6 → POP (hasil: 6)</code>. Setiap POP selalu mengeluarkan nilai yang paling atas / paling baru dimasukkan. Jika stack kosong, POP tidak berefek apa pun.</p>
+        <p><strong>Cara memilih:</strong> tanyakan "siapa yang harus diproses lebih dulu?" Jika jawabannya <em>yang paling lama menunggu</em> → gunakan queue. Jika jawabannya <em>yang paling baru masuk</em> → gunakan stack.</p>
+      </div>
 
       <h2 class="sec-title"><span class="fc-icon fc-diamond"></span>Studi Kasus: Stack atau Queue?</h2>
       <div class="scenario-grid" id="scenario-grid"></div>
