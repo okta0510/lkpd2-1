@@ -215,6 +215,13 @@ pre.code{
 .feedback-tag{ font-family:var(--font-display); font-size:12px; font-weight:700; padding:5px 10px; border-radius:6px; }
 .feedback-tag.ok{ background:rgba(111,207,151,.18); color:var(--mint); }
 .feedback-tag.bad{ background:rgba(239,93,96,.18); color:var(--coral); }
+.attempt-tag{ font-family:var(--font-display); font-size:11px; font-weight:700; margin-top:8px; display:none; }
+.attempt-tag.show{ display:inline-block; }
+.attempt-tag.ok{ color:var(--mint); }
+.attempt-tag.bad{ color:var(--coral); }
+.dl-row{ display:flex; gap:12px; justify-content:center; margin-top:22px; flex-wrap:wrap; }
+.dl-btn{ background:var(--amber); color:var(--amber-ink); border:none; font-weight:700; padding:12px 22px; border-radius:10px; cursor:pointer; font-family:var(--font-body); font-size:14px; display:flex; align-items:center; gap:8px; }
+.dl-btn:hover{ filter:brightness(1.08); }
 
 .trace-step{
   border:1px solid var(--border); background:var(--bg-2); border-radius:10px;
@@ -266,6 +273,10 @@ pre.code{
 @keyframes pop-in{ from{ transform:scale(.7); opacity:0;} to{ transform:scale(1); opacity:1;} }
 .stack-base{ font-size:10px; color:var(--text-dim); text-align:center; font-family:var(--font-body); }
 .stack-ops{ flex:1; min-width:260px; }
+
+.queue-row{ display:flex; gap:8px; min-height:80px; align-items:center; flex-wrap:wrap; padding:10px; background:var(--bg-2); border-radius:10px; border:1px dashed var(--border-soft); }
+.queue-card{ background:var(--paper); color:var(--ink); border:2px solid var(--paper-line); border-radius:8px; padding:10px 14px; font-family:var(--font-display); font-weight:700; animation:pop-in .25s ease; }
+.queue-labels{ display:flex; justify-content:space-between; font-family:var(--font-display); font-size:10px; color:var(--text-dim); margin-top:6px; }
 .op-line{ font-family:var(--font-display); font-size:12.5px; color:var(--text-dim); margin-bottom:6px; }
 .op-line.current{ color:var(--amber); font-weight:700; }
 .op-line.done{ color:var(--mint); }
@@ -327,8 +338,8 @@ pre.code{
     <button class="tab active" data-tab="mulai"><span class="dot">•</span> Mulai</button>
     <button class="tab" data-tab="algoritma"><span class="dot">A</span> Algoritma &amp; Diagram Alir <span class="score-chip" id="chip-algoritma">0/7</span></button>
     <button class="tab" data-tab="program"><span class="dot">B</span> Struktur Program <span class="score-chip" id="chip-program">0/12</span></button>
-    <button class="tab" data-tab="cariurut"><span class="dot">C</span> Cari &amp; Urut <span class="score-chip" id="chip-cariurut">0/10</span></button>
-    <button class="tab" data-tab="struktur"><span class="dot">D</span> Stack &amp; Queue <span class="score-chip" id="chip-struktur">0/7</span></button>
+    <button class="tab" data-tab="cariurut"><span class="dot">C</span> Cari &amp; Urut <span class="score-chip" id="chip-cariurut">0/18</span></button>
+    <button class="tab" data-tab="struktur"><span class="dot">D</span> Stack &amp; Queue <span class="score-chip" id="chip-struktur">0/10</span></button>
     <button class="tab" data-tab="hasil"><span class="dot">★</span> Hasil Akhir</button>
 
     <div class="rail-foot">
@@ -476,6 +487,15 @@ pre.code{
         <div class="sort-btns" id="sort-decision"></div>
         <div class="pass-track" id="sort-pass"></div>
       </div>
+
+      <h2 class="sec-title"><span class="fc-icon fc-diamond"></span>Simulasi Insertion Sort</h2>
+      <p class="sec-desc">Sekarang coba urutkan deret <strong>4, 2, 5, 1, 3</strong> dengan cara insertion sort — sisipkan tiap kartu ke posisi yang tepat, mirip menyusun kartu remi di tangan. Kartu berwarna kuning adalah kartu yang sedang "dipegang" untuk disisipkan.</p>
+      <div class="card">
+        <div class="sort-status" id="ins-status">Memuat…</div>
+        <div class="tiles" id="ins-tiles"></div>
+        <div class="sort-btns" id="ins-decision"></div>
+        <div class="pass-track" id="ins-pass"></div>
+      </div>
     </section>
 
     <!-- ============ PANEL: D. STRUKTUR DATA ============ -->
@@ -517,9 +537,19 @@ pre.code{
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- ============ PANEL: HASIL ============ -->
+      <h2 class="sec-title"><span class="fc-icon fc-rect"></span>Simulasi ENQUEUE &amp; DEQUEUE</h2>
+      <p class="sec-desc">Sama seperti stack, tapi kali ini FIFO — yang pertama masuk (paling kiri/depan), pertama keluar. Klik <strong>Jalankan langkah berikutnya</strong>, dan tebak dulu hasil <code>DEQUEUE</code> sebelum dibuka!</p>
+      <div class="card">
+        <div class="queue-row" id="queue-row"></div>
+        <div class="queue-labels"><span>◀ DEPAN (keluar duluan)</span><span>BELAKANG ▶</span></div>
+        <div id="queue-oplist" style="margin-top:14px;"></div>
+        <div id="queue-predict" style="margin-top:14px;"></div>
+        <div style="margin-top:14px;">
+          <button class="btn-outline" id="queue-next">▶ Jalankan langkah berikutnya</button>
+        </div>
+      </div>
+    </section>
     <section class="panel" id="panel-hasil">
       <div class="eyebrow"><span class="fc-terminator">SELESAI</span></div>
       <h1 class="page-title">Hasil Akhir</h1>
@@ -529,13 +559,34 @@ pre.code{
         <div class="result-score" id="result-score">0%</div>
         <div class="result-label">Total skor dari seluruh bagian</div>
         <div class="result-msg" id="result-msg">Ayo mulai mengerjakan!</div>
+        <div class="dl-row">
+          <button class="dl-btn" id="dlTxtBtn">⬇ Unduh Hasil (.txt)</button>
+        </div>
       </div>
 
       <div class="breakdown">
         <div class="card"><div class="num" id="res-algoritma">0/7</div><div class="lbl">A. Algoritma</div></div>
         <div class="card"><div class="num" id="res-program">0/12</div><div class="lbl">B. Struktur Program</div></div>
-        <div class="card"><div class="num" id="res-cariurut">0/10</div><div class="lbl">C. Cari &amp; Urut</div></div>
-        <div class="card"><div class="num" id="res-struktur">0/7</div><div class="lbl">D. Stack &amp; Queue</div></div>
+        <div class="card"><div class="num" id="res-cariurut">0/18</div><div class="lbl">C. Cari &amp; Urut</div></div>
+        <div class="card"><div class="num" id="res-struktur">0/10</div><div class="lbl">D. Stack &amp; Queue</div></div>
+      </div>
+
+      <h2 class="sec-title"><span class="fc-icon fc-rect"></span>Ringkasan Percobaan</h2>
+      <p class="sec-desc">Rekaman berapa kali kamu mencoba tiap soal sebelum menjawab benar (maksimal <strong id="att-cap-label">3</strong> kali percobaan per soal).</p>
+      <div class="breakdown" id="attempt-summary">
+        <div class="card"><div class="num" id="att-total-soal">0</div><div class="lbl">Soal Dikerjakan</div></div>
+        <div class="card"><div class="num" id="att-total-percobaan">0</div><div class="lbl">Total Percobaan</div></div>
+        <div class="card"><div class="num" id="att-rata">0</div><div class="lbl">Rata-rata / Soal</div></div>
+        <div class="card"><div class="num" id="att-pertama">0</div><div class="lbl">Benar Percobaan ke-1</div></div>
+      </div>
+      <div class="card">
+        <p class="card-note" style="margin-bottom:12px;">✎ Rincian per soal</p>
+        <div class="paper-table" style="max-height:340px; overflow-y:auto;">
+          <table>
+            <thead><tr><th>Bagian</th><th>Pertanyaan / Aktivitas</th><th>Percobaan</th><th>Status</th></tr></thead>
+            <tbody id="attempt-detail-body"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -549,9 +600,16 @@ pre.code{
 const SCORE = {
   algoritma: {correct:0, total:7},
   program:   {correct:0, total:12},
-  cariurut:  {correct:0, total:10},
-  struktur:  {correct:0, total:7}
+  cariurut:  {correct:0, total:18},
+  struktur:  {correct:0, total:10}
 };
+
+/* ---- Pelacak percobaan (attempts) per soal ---- */
+const ATTEMPT_CAP = 3; // maksimal percobaan sebelum jawaban dibuka otomatis
+const attemptLog = []; // {section, label, attempts, status:'benar'|'gagal'}
+function logAttempt(section, label, attempts, status){
+  attemptLog.push({section, label, attempts, status});
+}
 
 function addScore(key, isCorrect){
   if(isCorrect) SCORE[key].correct++;
@@ -587,6 +645,7 @@ function renderScoreUI(){
       idEl.innerHTML = `<strong style="color:var(--text)">${nama||'(nama belum diisi)'}</strong> — Kelas ${kelas||'?'} — ${kelompok||'Kelompok ?'}`;
     }
   }
+  renderAttemptSummary();
 }
 
 /* ============================================================
@@ -618,21 +677,44 @@ function renderMCQ(container, items, scoreKey){
     item.options.forEach((opt,i)=>{
       html += `<button class="opt-btn" data-i="${i}">${opt}</button>`;
     });
-    html += `</div><div class="explain" id="explain-${scoreKey}-${idx}">${item.explain}</div>`;
+    html += `</div><div class="attempt-tag" id="attempt-${scoreKey}-${container.id}-${idx}"></div><div class="explain" id="explain-${scoreKey}-${container.id}-${idx}">${item.explain}</div>`;
     block.innerHTML = html;
     container.appendChild(block);
 
     const buttons = block.querySelectorAll('.opt-btn');
+    const tagEl = block.querySelector(`#attempt-${scoreKey}-${container.id}-${idx}`);
     buttons.forEach(b=>{
       b.addEventListener('click', ()=>{
         if(block.dataset.locked) return;
-        block.dataset.locked = '1';
+        const attempts = (parseInt(block.dataset.attempts || '0') + 1);
+        block.dataset.attempts = attempts;
         const chosen = parseInt(b.dataset.i);
-        buttons.forEach(bb=>bb.disabled = true);
-        buttons[item.correct].classList.add('correct');
-        if(chosen !== item.correct) b.classList.add('wrong');
-        document.getElementById(`explain-${scoreKey}-${idx}`).classList.add('show');
-        addScore(scoreKey, chosen === item.correct);
+        const isCorrect = chosen === item.correct;
+
+        if(isCorrect){
+          block.dataset.locked = '1';
+          buttons.forEach(bb=>bb.disabled = true);
+          b.classList.add('correct');
+          document.getElementById(`explain-${scoreKey}-${container.id}-${idx}`).classList.add('show');
+          tagEl.textContent = `✓ Benar — Percobaan ke-${attempts}`;
+          tagEl.className = 'attempt-tag show ok';
+          addScore(scoreKey, true);
+          logAttempt(scoreKey, item.q, attempts, 'benar');
+        } else if(attempts >= ATTEMPT_CAP){
+          block.dataset.locked = '1';
+          b.classList.add('wrong'); b.disabled = true;
+          buttons.forEach(bb=>bb.disabled = true);
+          buttons[item.correct].classList.add('correct');
+          document.getElementById(`explain-${scoreKey}-${container.id}-${idx}`).classList.add('show');
+          tagEl.textContent = `✗ Batas ${attempts}× percobaan tercapai — jawaban benar ditampilkan`;
+          tagEl.className = 'attempt-tag show bad';
+          addScore(scoreKey, false);
+          logAttempt(scoreKey, item.q, attempts, 'gagal');
+        } else {
+          b.classList.add('wrong'); b.disabled = true;
+          tagEl.textContent = `✗ Belum tepat — Percobaan ke-${attempts}, coba lagi (maks ${ATTEMPT_CAP}×)`;
+          tagEl.className = 'attempt-tag show bad';
+        }
       });
     });
   });
@@ -672,20 +754,35 @@ const tracerData = [
     document.getElementById('tcheck-'+i).addEventListener('click', ()=>{
       const btn = document.getElementById('tcheck-'+i);
       if(btn.disabled) return;
+      const attempts = (parseInt(btn.dataset.attempts || '0') + 1);
+      btn.dataset.attempts = attempts;
       const val = parseInt(document.getElementById('tin-'+i).value);
       const fb = document.getElementById('tfb-'+i);
       const ok = val === d.after;
-      fb.textContent = ok ? '✓ Benar' : ('✗ Jawaban: '+d.after);
-      fb.className = 'feedback-tag ' + (ok ? 'ok':'bad');
-      document.getElementById('tcell-'+i).textContent = d.after;
-      btn.disabled = true;
-      document.getElementById('tin-'+i).disabled = true;
-      addScore('algoritma', ok);
-
-      document.getElementById('tstep-'+i).classList.remove('active');
-      document.getElementById('tstep-'+i).classList.add('done');
-      if(i+1 < tracerData.length){
-        document.getElementById('tstep-'+(i+1)).classList.add('active');
+      const doneStep = ()=>{
+        document.getElementById('tstep-'+i).classList.remove('active');
+        document.getElementById('tstep-'+i).classList.add('done');
+        if(i+1 < tracerData.length) document.getElementById('tstep-'+(i+1)).classList.add('active');
+      };
+      if(ok){
+        fb.textContent = `✓ Benar — Percobaan ke-${attempts}`;
+        fb.className = 'feedback-tag ok';
+        document.getElementById('tcell-'+i).textContent = d.after;
+        btn.disabled = true; document.getElementById('tin-'+i).disabled = true;
+        addScore('algoritma', true);
+        logAttempt('algoritma', 'Tracer bilangan terbesar — langkah '+(i+1), attempts, 'benar');
+        doneStep();
+      } else if(attempts >= ATTEMPT_CAP){
+        fb.textContent = `✗ Jawaban: ${d.after} (batas ${attempts}× percobaan)`;
+        fb.className = 'feedback-tag bad';
+        document.getElementById('tcell-'+i).textContent = d.after;
+        btn.disabled = true; document.getElementById('tin-'+i).disabled = true;
+        addScore('algoritma', false);
+        logAttempt('algoritma', 'Tracer bilangan terbesar — langkah '+(i+1), attempts, 'gagal');
+        doneStep();
+      } else {
+        fb.textContent = `✗ Coba lagi — Percobaan ke-${attempts} (maks ${ATTEMPT_CAP}×)`;
+        fb.className = 'feedback-tag bad';
       }
     });
   });
@@ -794,17 +891,34 @@ const recurSteps = [
     document.getElementById('rcheck-'+i).addEventListener('click', ()=>{
       const btn = document.getElementById('rcheck-'+i);
       if(btn.disabled) return;
+      const attempts = (parseInt(btn.dataset.attempts || '0') + 1);
+      btn.dataset.attempts = attempts;
       const val = parseInt(document.getElementById('rin-'+i).value);
       const ok = val === s.answer;
       const fb = document.getElementById('rfb-'+i);
-      fb.textContent = ok ? '✓ Benar' : ('✗ Jawaban: '+s.answer);
-      fb.className = 'feedback-tag ' + (ok?'ok':'bad');
-      btn.disabled = true;
-      document.getElementById('rin-'+i).disabled = true;
-      addScore('program', ok);
-      document.getElementById('rstep-'+i).classList.remove('active');
-      document.getElementById('rstep-'+i).classList.add('done');
-      if(i+1 < recurSteps.length) document.getElementById('rstep-'+(i+1)).classList.add('active');
+      const doneStep = ()=>{
+        document.getElementById('rstep-'+i).classList.remove('active');
+        document.getElementById('rstep-'+i).classList.add('done');
+        if(i+1 < recurSteps.length) document.getElementById('rstep-'+(i+1)).classList.add('active');
+      };
+      if(ok){
+        fb.textContent = `✓ Benar — Percobaan ke-${attempts}`;
+        fb.className = 'feedback-tag ok';
+        btn.disabled = true; document.getElementById('rin-'+i).disabled = true;
+        addScore('program', true);
+        logAttempt('program', 'Jejak rekursif — '+s.label, attempts, 'benar');
+        doneStep();
+      } else if(attempts >= ATTEMPT_CAP){
+        fb.textContent = `✗ Jawaban: ${s.answer} (batas ${attempts}× percobaan)`;
+        fb.className = 'feedback-tag bad';
+        btn.disabled = true; document.getElementById('rin-'+i).disabled = true;
+        addScore('program', false);
+        logAttempt('program', 'Jejak rekursif — '+s.label, attempts, 'gagal');
+        doneStep();
+      } else {
+        fb.textContent = `✗ Coba lagi — Percobaan ke-${attempts} (maks ${ATTEMPT_CAP}×)`;
+        fb.className = 'feedback-tag bad';
+      }
     });
   });
 })();
@@ -853,6 +967,7 @@ const recurSteps = [
     function afterDecision(pickedSwap){
       const correct = (pickedSwap === needSwap);
       addScore('cariurut', correct);
+      logAttempt('cariurut', `Bubble Sort iterasi ${passNum} — bandingkan posisi [${pairIndex+1}] & [${pairIndex+2}]`, 1, correct ? 'benar' : 'gagal');
       btnSwap.disabled = true; btnKeep.disabled = true;
       if(needSwap){
         [arr[pairIndex], arr[pairIndex+1]] = [arr[pairIndex+1], arr[pairIndex]];
@@ -891,6 +1006,102 @@ const recurSteps = [
   renderTiles(null);
   renderDecision();
   passEl.textContent = 'Ikuti pasangan yang disorot pada tiap iterasi.';
+})();
+
+/* ============================================================
+   C. INSERTION SORT SIMULATOR — deret 4,2,5,1,3
+   ============================================================ */
+(function initInsertionSort(){
+  let arr = [4,2,5,1,3];
+  let i = 1;   // indeks kartu yang sedang disisipkan (kunci)
+  let pos = 1; // posisi kartu kunci saat ini, bergerak ke kiri selama masih perlu digeser
+  let finished = false;
+
+  const tilesEl = document.getElementById('ins-tiles');
+  const statusEl = document.getElementById('ins-status');
+  const decisionEl = document.getElementById('ins-decision');
+  const passEl = document.getElementById('ins-pass');
+
+  function renderTiles(highlightPair, keyIdx){
+    tilesEl.innerHTML = '';
+    arr.forEach((v,idx)=>{
+      let cls = 'tile';
+      if(highlightPair && (idx===highlightPair[0]||idx===highlightPair[1])) cls += ' compare';
+      if(idx===keyIdx) cls += ' swapped';
+      const t = document.createElement('div');
+      t.className = cls;
+      t.textContent = v;
+      tilesEl.appendChild(t);
+    });
+  }
+
+  function finish(){
+    finished = true;
+    renderTiles(null, null);
+    statusEl.textContent = '🎉 Selesai! Deret sudah terurut menaik: ' + arr.join(', ');
+    decisionEl.innerHTML = '';
+    passEl.textContent = 'Insertion sort selesai — setiap kartu sudah disisipkan di posisi yang tepat.';
+  }
+
+  function startPass(){
+    if(i >= arr.length){ finish(); return; }
+    pos = i;
+    renderTiles(null, pos);
+    passEl.textContent = `Kartu ke-${i+1} (nilai ${arr[i]}) sedang disisipkan ke bagian yang sudah terurut.`;
+    askDecision();
+  }
+
+  function askDecision(){
+    decisionEl.innerHTML = '';
+    if(finished) return;
+    if(pos <= 0){
+      // sudah sampai posisi paling kiri, tidak ada lagi yang dibandingkan
+      i++;
+      startPass();
+      return;
+    }
+    const left = arr[pos-1], key = arr[pos];
+    statusEl.textContent = `Bandingkan kartu di kiri (${left}) dengan kartu kunci (${key})`;
+    renderTiles([pos-1,pos], pos);
+
+    const btnGeser = document.createElement('button');
+    btnGeser.className = 'btn-outline';
+    btnGeser.textContent = `Geser (${left} > ${key})`;
+    const btnStop = document.createElement('button');
+    btnStop.className = 'btn-outline';
+    btnStop.textContent = 'Berhenti, sisipkan di sini';
+    decisionEl.appendChild(btnGeser);
+    decisionEl.appendChild(btnStop);
+
+    const needShift = left > key;
+
+    function afterDecision(pickedShift){
+      const correct = (pickedShift === needShift);
+      addScore('cariurut', correct);
+      logAttempt('cariurut', `Insertion Sort — kartu ke-${i+1}, posisi [${pos}] vs [${pos+1}]`, 1, correct ? 'benar' : 'gagal');
+      btnGeser.disabled = true; btnStop.disabled = true;
+      if(needShift){ [arr[pos-1], arr[pos]] = [arr[pos], arr[pos-1]]; }
+      statusEl.textContent = correct
+        ? (needShift ? '✓ Tepat, kartu kiri lebih besar — digeser!' : '✓ Tepat, kartu kunci sudah di posisi yang benar.')
+        : (needShift ? '✗ Sebenarnya perlu digeser.' : '✗ Sebenarnya kartu kunci sudah di posisi yang benar.');
+
+      setTimeout(()=>{
+        if(needShift){
+          pos--;
+          renderTiles(null, pos);
+          askDecision();
+        } else {
+          i++;
+          startPass();
+        }
+      }, 650);
+    }
+
+    btnGeser.addEventListener('click', ()=>afterDecision(true));
+    btnStop.addEventListener('click', ()=>afterDecision(false));
+  }
+
+  startPass();
 })();
 
 /* ============================================================
@@ -935,12 +1146,27 @@ const scenarios = [
     btns.forEach(b=>{
       b.addEventListener('click', ()=>{
         if(card.dataset.locked) return;
-        card.dataset.locked = '1';
-        btns.forEach(bb=>bb.disabled = true);
-        btns.forEach(bb=>{ if(bb.dataset.v === s.answer) bb.classList.add('correct'); });
-        if(b.dataset.v !== s.answer) b.classList.add('wrong');
-        document.getElementById('sc-explain-'+i).classList.add('show');
-        addScore('struktur', b.dataset.v === s.answer);
+        const attempts = (parseInt(card.dataset.attempts || '0') + 1);
+        card.dataset.attempts = attempts;
+        const isCorrect = b.dataset.v === s.answer;
+        if(isCorrect){
+          card.dataset.locked = '1';
+          btns.forEach(bb=>bb.disabled = true);
+          b.classList.add('correct');
+          document.getElementById('sc-explain-'+i).classList.add('show');
+          addScore('struktur', true);
+          logAttempt('struktur', 'Studi kasus — '+s.txt.slice(0,50)+'…', attempts, 'benar');
+        } else if(attempts >= ATTEMPT_CAP){
+          card.dataset.locked = '1';
+          b.classList.add('wrong'); b.disabled = true;
+          btns.forEach(bb=>{ if(bb.dataset.v === s.answer) bb.classList.add('correct'); });
+          btns.forEach(bb=>bb.disabled = true);
+          document.getElementById('sc-explain-'+i).classList.add('show');
+          addScore('struktur', false);
+          logAttempt('struktur', 'Studi kasus — '+s.txt.slice(0,50)+'…', attempts, 'gagal');
+        } else {
+          b.classList.add('wrong'); b.disabled = true;
+        }
       });
     });
   });
@@ -1009,20 +1235,34 @@ const stackOps = [
       document.getElementById('stack-guess-btn').addEventListener('click', ()=>{
         const guessBtn = document.getElementById('stack-guess-btn');
         if(guessBtn.disabled) return;
+        const attempts = (parseInt(guessBtn.dataset.attempts || '0') + 1);
+        guessBtn.dataset.attempts = attempts;
         const val = parseInt(document.getElementById('stack-guess').value);
         const ok = val === op.expect;
-        const popped = stack.pop();
-        document.getElementById('stack-guess-fb').textContent = ok ? '✓ Benar, hasil POP = '+popped : '✗ Hasil POP sebenarnya = '+popped;
-        document.getElementById('stack-guess-fb').className = 'feedback-tag ' + (ok?'ok':'bad');
-        guessBtn.disabled = true;
-        document.getElementById('stack-guess').disabled = true;
-        addScore('struktur', ok);
-        renderStack();
-        opIdx++;
-        renderOpList();
-        awaitingPrediction = false;
-        nextBtn.disabled = false;
-        if(opIdx>=stackOps.length){ nextBtn.disabled = true; }
+        const fb = document.getElementById('stack-guess-fb');
+        const finish = ()=>{
+          stack.pop();
+          renderStack(); opIdx++; renderOpList(); awaitingPrediction = false; nextBtn.disabled = false;
+          if(opIdx>=stackOps.length){ nextBtn.disabled = true; }
+        };
+        if(ok){
+          fb.textContent = `✓ Benar — Percobaan ke-${attempts}, hasil POP = ${op.expect}`;
+          fb.className = 'feedback-tag ok';
+          guessBtn.disabled = true; document.getElementById('stack-guess').disabled = true;
+          addScore('struktur', true);
+          logAttempt('struktur', 'Prediksi POP #'+(opIdx+1), attempts, 'benar');
+          finish();
+        } else if(attempts >= ATTEMPT_CAP){
+          fb.textContent = `✗ Hasil POP sebenarnya = ${op.expect} (batas ${attempts}× percobaan)`;
+          fb.className = 'feedback-tag bad';
+          guessBtn.disabled = true; document.getElementById('stack-guess').disabled = true;
+          addScore('struktur', false);
+          logAttempt('struktur', 'Prediksi POP #'+(opIdx+1), attempts, 'gagal');
+          finish();
+        } else {
+          fb.textContent = `✗ Coba lagi — Percobaan ke-${attempts} (maks ${ATTEMPT_CAP}×)`;
+          fb.className = 'feedback-tag bad';
+        }
       });
     }
   }
@@ -1031,6 +1271,208 @@ const stackOps = [
   renderStack();
   renderOpList();
 })();
+
+/* ============================================================
+   D. QUEUE SIMULATOR — ENQUEUE & DEQUEUE
+   ============================================================ */
+const queueOps = [
+  {type:'enq', val:5}, {type:'enq', val:3}, {type:'enq', val:2}, {type:'enq', val:4},
+  {type:'deq', expect:5}, {type:'enq', val:6}, {type:'deq', expect:3}, {type:'deq', expect:2}
+];
+(function initQueueSim(){
+  let queue = [];
+  let opIdx = 0;
+  let awaitingPrediction = false;
+
+  const rowEl = document.getElementById('queue-row');
+  const listEl = document.getElementById('queue-oplist');
+  const predictEl = document.getElementById('queue-predict');
+  const nextBtn = document.getElementById('queue-next');
+
+  function renderOpList(){
+    listEl.innerHTML = queueOps.map((op,i)=>{
+      const txt = op.type==='enq' ? `ENQUEUE ${op.val}` : `DEQUEUE`;
+      let cls = '';
+      if(i < opIdx) cls = 'done';
+      else if(i === opIdx) cls = 'current';
+      return `<div class="op-line ${cls}">${i+1}. ${txt}</div>`;
+    }).join('');
+  }
+  function renderQueue(){
+    rowEl.innerHTML = queue.map(v=>`<div class="queue-card">${v}</div>`).join('') || '<span style="color:var(--text-dim); font-family:var(--font-display); font-size:12px;">(kosong)</span>';
+  }
+
+  function step(){
+    if(opIdx >= queueOps.length){
+      nextBtn.disabled = true;
+      predictEl.innerHTML = '<span class="feedback-tag ok">🎉 Simulasi selesai!</span>';
+      return;
+    }
+    const op = queueOps[opIdx];
+    if(op.type === 'enq'){
+      queue.push(op.val);
+      renderQueue();
+      opIdx++;
+      renderOpList();
+      if(opIdx>=queueOps.length){ nextBtn.disabled = true; predictEl.innerHTML = '<span class="feedback-tag ok">🎉 Simulasi selesai!</span>'; }
+    } else {
+      awaitingPrediction = true;
+      predictEl.innerHTML = `
+        <div class="fill-row">
+          <span style="font-family:var(--font-display);">Prediksi hasil DEQUEUE:</span>
+          <input type="number" id="queue-guess">
+          <button class="check-btn" id="queue-guess-btn">Cek</button>
+          <span class="feedback-tag" id="queue-guess-fb"></span>
+        </div>`;
+      nextBtn.disabled = true;
+      document.getElementById('queue-guess-btn').addEventListener('click', ()=>{
+        const guessBtn = document.getElementById('queue-guess-btn');
+        if(guessBtn.disabled) return;
+        const attempts = (parseInt(guessBtn.dataset.attempts || '0') + 1);
+        guessBtn.dataset.attempts = attempts;
+        const val = parseInt(document.getElementById('queue-guess').value);
+        const ok = val === op.expect;
+        const fb = document.getElementById('queue-guess-fb');
+        const finish = ()=>{
+          queue.shift();
+          renderQueue(); opIdx++; renderOpList(); awaitingPrediction = false; nextBtn.disabled = false;
+          if(opIdx>=queueOps.length){ nextBtn.disabled = true; }
+        };
+        if(ok){
+          fb.textContent = `✓ Benar — Percobaan ke-${attempts}, hasil DEQUEUE = ${op.expect}`;
+          fb.className = 'feedback-tag ok';
+          guessBtn.disabled = true; document.getElementById('queue-guess').disabled = true;
+          addScore('struktur', true);
+          logAttempt('struktur', 'Prediksi DEQUEUE #'+(opIdx+1), attempts, 'benar');
+          finish();
+        } else if(attempts >= ATTEMPT_CAP){
+          fb.textContent = `✗ Hasil DEQUEUE sebenarnya = ${op.expect} (batas ${attempts}× percobaan)`;
+          fb.className = 'feedback-tag bad';
+          guessBtn.disabled = true; document.getElementById('queue-guess').disabled = true;
+          addScore('struktur', false);
+          logAttempt('struktur', 'Prediksi DEQUEUE #'+(opIdx+1), attempts, 'gagal');
+          finish();
+        } else {
+          fb.textContent = `✗ Coba lagi — Percobaan ke-${attempts} (maks ${ATTEMPT_CAP}×)`;
+          fb.className = 'feedback-tag bad';
+        }
+      });
+    }
+  }
+  nextBtn.addEventListener('click', ()=>{ if(!awaitingPrediction) step(); });
+  renderQueue();
+  renderOpList();
+})();
+
+/* ============================================================
+   RINGKASAN PERCOBAAN + UNDUH HASIL
+   ============================================================ */
+const SECTION_LABEL = {
+  algoritma:'A. Algoritma & Diagram Alir',
+  program:'B. Struktur Program',
+  cariurut:'C. Cari & Urut',
+  struktur:'D. Stack & Queue'
+};
+
+function renderAttemptSummary(){
+  const capLabel = document.getElementById('att-cap-label');
+  if(capLabel) capLabel.textContent = ATTEMPT_CAP;
+
+  const totalSoal = attemptLog.length;
+  const totalPercobaan = attemptLog.reduce((a,l)=>a+l.attempts,0);
+  const rata = totalSoal ? (totalPercobaan/totalSoal).toFixed(1) : '0';
+  const pertama = attemptLog.filter(l=>l.attempts===1 && l.status==='benar').length;
+
+  const elTotalSoal = document.getElementById('att-total-soal');
+  const elTotalPercobaan = document.getElementById('att-total-percobaan');
+  const elRata = document.getElementById('att-rata');
+  const elPertama = document.getElementById('att-pertama');
+  if(elTotalSoal) elTotalSoal.textContent = totalSoal;
+  if(elTotalPercobaan) elTotalPercobaan.textContent = totalPercobaan;
+  if(elRata) elRata.textContent = rata;
+  if(elPertama) elPertama.textContent = pertama;
+
+  const body = document.getElementById('attempt-detail-body');
+  if(body){
+    if(attemptLog.length===0){
+      body.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#8a8265;">Belum ada soal yang dikerjakan.</td></tr>';
+    } else {
+      body.innerHTML = attemptLog.map(l=>{
+        const statusTxt = l.status==='benar' ? '✓ Benar' : '✗ Gagal';
+        return `<tr><td>${SECTION_LABEL[l.section]||l.section}</td><td>${l.label}</td><td>Percobaan ke-${l.attempts}</td><td>${statusTxt}</td></tr>`;
+      }).join('');
+    }
+  }
+}
+
+function getIdentity(){
+  return {
+    nama: document.getElementById('in-nama').value.trim(),
+    kelas: document.getElementById('in-kelas').value.trim(),
+    kelompok: document.getElementById('in-kelompok').value.trim()
+  };
+}
+
+const dlBtn = document.getElementById('dlTxtBtn');
+if(dlBtn){
+  dlBtn.addEventListener('click', ()=>{
+    const id = getIdentity();
+    const totalCorrect = Object.values(SCORE).reduce((a,s)=>a+s.correct,0);
+    const totalAll = Object.values(SCORE).reduce((a,s)=>a+s.total,0);
+    const pct = Math.round((totalCorrect/totalAll)*100);
+    const tanggal = new Date().toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric'});
+    const totalSoal = attemptLog.length;
+    const totalPercobaan = attemptLog.reduce((a,l)=>a+l.attempts,0);
+    const rata = totalSoal ? (totalPercobaan/totalSoal).toFixed(2) : '0';
+    const pertama = attemptLog.filter(l=>l.attempts===1 && l.status==='benar').length;
+    const perluUlang = attemptLog.filter(l=>l.attempts>1).length;
+
+    const lines = [
+      '════════════════════════════════════════',
+      ' LKPD — ALGORITMA DAN STRUKTUR DATA',
+      ' SMAN 10 Bandar Lampung — Informatika Kelas X — Bab 2',
+      '════════════════════════════════════════',
+      '',
+      'Nama      : ' + (id.nama || '-'),
+      'Kelas     : ' + (id.kelas || '-'),
+      'Kelompok  : ' + (id.kelompok || '-'),
+      'Tanggal   : ' + tanggal,
+      '',
+      '----- RINGKASAN SKOR -----',
+      'A. Algoritma & Diagram Alir : ' + SCORE.algoritma.correct + '/' + SCORE.algoritma.total,
+      'B. Struktur Program         : ' + SCORE.program.correct + '/' + SCORE.program.total,
+      'C. Cari & Urut              : ' + SCORE.cariurut.correct + '/' + SCORE.cariurut.total,
+      'D. Stack & Queue            : ' + SCORE.struktur.correct + '/' + SCORE.struktur.total,
+      '',
+      'TOTAL SKOR: ' + totalCorrect + '/' + totalAll + ' (' + pct + '%)',
+      document.getElementById('result-msg').textContent,
+      '',
+      '----- RINGKASAN PERCOBAAN -----',
+      'Soal dikerjakan            : ' + totalSoal,
+      'Total percobaan (klik)     : ' + totalPercobaan,
+      'Rata-rata percobaan/soal   : ' + rata,
+      'Benar di percobaan ke-1    : ' + pertama + ' soal',
+      'Butuh lebih dari 1 kali    : ' + perluUlang + ' soal',
+      '(maksimal ' + ATTEMPT_CAP + ' kali percobaan per soal sebelum jawaban dibuka otomatis)',
+      '',
+      '----- RINCIAN PER SOAL -----'
+    ];
+    attemptLog.forEach((l,i)=>{
+      lines.push((i+1)+'. ['+(SECTION_LABEL[l.section]||l.section)+'] '+l.label);
+      lines.push('   Percobaan ke-'+l.attempts+' — '+(l.status==='benar' ? 'Benar' : 'Gagal (jawaban dibuka otomatis)'));
+    });
+    lines.push('');
+    lines.push('════════════════════════════════════════');
+
+    const blob = new Blob([lines.join('\n')], {type:'text/plain;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Hasil_LKPD_' + (id.nama ? id.nama.replace(/\s+/g,'_') : 'siswa') + '.txt';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+}
 
 /* ============================================================
    RESET
