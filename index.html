@@ -336,7 +336,7 @@ pre.code{
     <div class="brand-sub">LKPD Bab 2 — Algoritma &amp; Struktur Data<br>Informatika Kelas X</div>
 
     <button class="tab active" data-tab="mulai"><span class="dot">•</span> Mulai</button>
-    <button class="tab" data-tab="algoritma"><span class="dot">A</span> Algoritma &amp; Diagram Alir <span class="score-chip" id="chip-algoritma">0/7</span></button>
+    <button class="tab" data-tab="algoritma"><span class="dot">A</span> Algoritma &amp; Diagram Alir <span class="score-chip" id="chip-algoritma">0/22</span></button>
     <button class="tab" data-tab="program"><span class="dot">B</span> Struktur Program <span class="score-chip" id="chip-program">0/12</span></button>
     <button class="tab" data-tab="cariurut"><span class="dot">C</span> Cari &amp; Urut <span class="score-chip" id="chip-cariurut">0/18</span></button>
     <button class="tab" data-tab="struktur"><span class="dot">D</span> Stack &amp; Queue <span class="score-chip" id="chip-struktur">0/10</span></button>
@@ -416,6 +416,55 @@ pre.code{
           </table>
         </div>
         <div id="tracer-steps"></div>
+      </div>
+
+      <h2 class="sec-title"><span class="fc-icon fc-rect"></span>Latihan Tracing Bertingkat</h2>
+      <p class="sec-desc">Sekarang giliranmu berlatih menelusuri (tracing) empat jenis struktur — dari yang paling sederhana sampai paling menantang. Kerjakan urut dari Latihan 1, jangan diloncat!</p>
+
+      <div class="materi-box">
+        <span class="materi-tag">📘 Latihan 1 — Proses Biasa</span>
+        <h3>Menghitung Luas Persegi Panjang</h3>
+        <p>Diagram alir: <code>MULAI → READ p, l → luas = p × l → PRINT luas → SELESAI</code></p>
+        <p>Masukan: <strong>p = 7, l = 4</strong></p>
+      </div>
+      <div class="card">
+        <div id="lat1-steps"></div>
+      </div>
+
+      <div class="materi-box">
+        <span class="materi-tag">📘 Latihan 2 — Percabangan (Kasus Batas)</span>
+        <h3>Menentukan Kelulusan</h3>
+        <p>Diagram alir: <code>MULAI → READ nilai → (nilai ≥ 75?) → jika YA: PRINT "Lulus" | jika TIDAK: PRINT "Tidak Lulus" → SELESAI</code></p>
+        <p>Masukan: <strong>nilai = 75</strong> — perhatikan baik-baik operator perbandingannya, ini kasus tepat di batas!</p>
+      </div>
+      <div class="card" id="quiz-lat2"></div>
+
+      <div class="materi-box">
+        <span class="materi-tag">📘 Latihan 3 — Perulangan</span>
+        <h3>Menjumlahkan Bilangan 1 sampai N</h3>
+        <p>Diagram alir: <code>total=0, i=1 → (i ≤ N?) → jika YA: total=total+i, i=i+1, kembali cek → jika TIDAK: PRINT total</code></p>
+        <p>Masukan: <strong>N = 6</strong> — isi nilai <code>total</code> yang baru setelah tiap iterasi.</p>
+      </div>
+      <div class="card">
+        <div id="lat3-steps"></div>
+      </div>
+
+      <div class="materi-box">
+        <span class="materi-tag">📘 Latihan 4 — Rekursi</span>
+        <h3>Simulasi Fungsi Rekursif f(3)</h3>
+        <p>Fungsi: <code>f(n) = 3 jika n=0, selain itu 2×f(n-1)+4</code>. Rekursi selalu punya dua fase seperti menaiki tangga: <strong>Fase 1 — Turun</strong> (memanggil diri sendiri sampai ketemu langkah basis) dan <strong>Fase 2 — Naik</strong> (menghitung nilai balik dari basis ke atas). Perhatikan: tumpukan pemanggilan di bawah ini persis seperti struktur data <strong>Stack</strong> yang kamu pelajari di Bagian D!</p>
+      </div>
+      <div class="card">
+        <div class="stack-wrap">
+          <div>
+            <div class="stack-col" id="recsim-stack"></div>
+            <div class="stack-base">▬▬ langkah basis ▬▬</div>
+          </div>
+          <div class="stack-ops">
+            <div class="trace-num" id="recsim-phase">FASE 1 — TURUN</div>
+            <div id="recsim-area"></div>
+          </div>
+        </div>
       </div>
 
       <h2 class="sec-title"><span class="fc-icon fc-diamond"></span>Kuis Konsep Cepat</h2>
@@ -565,7 +614,7 @@ pre.code{
       </div>
 
       <div class="breakdown">
-        <div class="card"><div class="num" id="res-algoritma">0/7</div><div class="lbl">A. Algoritma</div></div>
+        <div class="card"><div class="num" id="res-algoritma">0/22</div><div class="lbl">A. Algoritma</div></div>
         <div class="card"><div class="num" id="res-program">0/12</div><div class="lbl">B. Struktur Program</div></div>
         <div class="card"><div class="num" id="res-cariurut">0/18</div><div class="lbl">C. Cari &amp; Urut</div></div>
         <div class="card"><div class="num" id="res-struktur">0/10</div><div class="lbl">D. Stack &amp; Queue</div></div>
@@ -598,7 +647,7 @@ pre.code{
    STATE
    ============================================================ */
 const SCORE = {
-  algoritma: {correct:0, total:7},
+  algoritma: {correct:0, total:22},
   program:   {correct:0, total:12},
   cariurut:  {correct:0, total:18},
   struktur:  {correct:0, total:10}
@@ -786,6 +835,227 @@ const tracerData = [
       }
     });
   });
+})();
+
+/* ============================================================
+   A. LATIHAN TRACING BERTINGKAT (Latihan 1 & 3: fill-blank generik)
+   ============================================================ */
+function initFillTracer(steps, wrapId, scoreKey, labelPrefix){
+  const wrap = document.getElementById(wrapId);
+  steps.forEach((s,i)=>{
+    const step = document.createElement('div');
+    step.className = 'trace-step' + (i===0 ? ' active':'');
+    step.id = wrapId+'-step-'+i;
+    step.innerHTML = `
+      <div class="trace-num">${s.title}</div>
+      <div class="fill-row">
+        <span>${s.prompt}</span>
+        <input type="number" id="${wrapId}-in-${i}">
+        <button class="check-btn" id="${wrapId}-check-${i}">Cek</button>
+        <span class="feedback-tag" id="${wrapId}-fb-${i}"></span>
+      </div>`;
+    wrap.appendChild(step);
+
+    document.getElementById(`${wrapId}-check-${i}`).addEventListener('click', ()=>{
+      const btn = document.getElementById(`${wrapId}-check-${i}`);
+      if(btn.disabled) return;
+      const attempts = (parseInt(btn.dataset.attempts || '0') + 1);
+      btn.dataset.attempts = attempts;
+      const val = parseInt(document.getElementById(`${wrapId}-in-${i}`).value);
+      const fb = document.getElementById(`${wrapId}-fb-${i}`);
+      const ok = val === s.answer;
+      const doneStep = ()=>{
+        document.getElementById(wrapId+'-step-'+i).classList.remove('active');
+        document.getElementById(wrapId+'-step-'+i).classList.add('done');
+        if(i+1 < steps.length) document.getElementById(wrapId+'-step-'+(i+1)).classList.add('active');
+      };
+      if(ok){
+        fb.textContent = `✓ Benar — Percobaan ke-${attempts}`;
+        fb.className = 'feedback-tag ok';
+        btn.disabled = true; document.getElementById(`${wrapId}-in-${i}`).disabled = true;
+        addScore(scoreKey, true);
+        logAttempt(scoreKey, labelPrefix+' — langkah '+(i+1), attempts, 'benar');
+        doneStep();
+      } else if(attempts >= ATTEMPT_CAP){
+        fb.textContent = `✗ Jawaban: ${s.answer} (batas ${attempts}× percobaan)`;
+        fb.className = 'feedback-tag bad';
+        btn.disabled = true; document.getElementById(`${wrapId}-in-${i}`).disabled = true;
+        addScore(scoreKey, false);
+        logAttempt(scoreKey, labelPrefix+' — langkah '+(i+1), attempts, 'gagal');
+        doneStep();
+      } else {
+        fb.textContent = `✗ Coba lagi — Percobaan ke-${attempts} (maks ${ATTEMPT_CAP}×)`;
+        fb.className = 'feedback-tag bad';
+      }
+    });
+  });
+}
+
+/* Latihan 1 — Proses biasa: luas persegi panjang p=7, l=4 */
+initFillTracer([
+  { title:'LANGKAH 1 — Proses', prompt:'luas = p × l = 7 × 4 =', answer:28 }
+], 'lat1-steps', 'algoritma', 'Latihan 1 (Proses)');
+
+/* Latihan 2 — Percabangan kasus batas: nilai=75 */
+renderMCQ(document.getElementById('quiz-lat2'), [
+  {
+    q: 'Nilai = 75. Berdasarkan kondisi (nilai ≥ 75), status apa yang dicetak program?',
+    options: ['Lulus', 'Tidak Lulus'],
+    correct: 0,
+    explain: 'Karena kondisinya "nilai ≥ 75" (pakai tanda ≥, bukan cuma >), maka 75 ≥ 75 bernilai benar — status yang dicetak tetap "Lulus". Ini kasus batas yang sering membuat siswa salah kalau tidak teliti membaca operator perbandingan.'
+  }
+], 'algoritma');
+
+/* Latihan 3 — Perulangan: jumlah 1 sampai N=6 */
+(function(){
+  const lat3Steps = [1,2,3,4,5,6].map((i)=>{
+    const prevTotal = (i-1)*i/2;
+    return {
+      title: 'ITERASI '+i,
+      prompt: `total sebelumnya: ${prevTotal}. Nilai total baru (total + ${i}) =`,
+      answer: prevTotal + i
+    };
+  });
+  initFillTracer(lat3Steps, 'lat3-steps', 'algoritma', 'Latihan 3 (Perulangan)');
+})();
+
+/* ============================================================
+   Latihan 4 — Simulasi Rekursi f(3) — Fase Turun & Naik (visual stack)
+   ============================================================ */
+(function initRecursionSim(){
+  const FUNC_N = 3; // hitung f(3)
+  const stackEl = document.getElementById('recsim-stack');
+  const phaseEl = document.getElementById('recsim-phase');
+  const areaEl = document.getElementById('recsim-area');
+
+  const turunOrder = []; // [3,2,1,0]
+  for(let n = FUNC_N; n >= 0; n--) turunOrder.push(n);
+  let turunIdx = 0;
+  let naikIdx = 0; // dipakai di fase naik, mengacu ke turunOrder terbalik (tanpa basis)
+  const naikOrder = turunOrder.slice(0, -1).reverse(); // [1,2,3] untuk FUNC_N=3
+
+  function pushCard(n, label){
+    const card = document.createElement('div');
+    card.className = 'stack-card';
+    card.id = 'recsim-card-'+n;
+    card.textContent = label;
+    stackEl.appendChild(card);
+  }
+  function updateCard(n, label){
+    const card = document.getElementById('recsim-card-'+n);
+    if(card){ card.textContent = label; card.style.background = 'var(--mint)'; }
+  }
+
+  function askTurun(){
+    const n = turunOrder[turunIdx];
+    pushCard(n, `f(${n}) — ?`);
+    phaseEl.textContent = 'FASE 1 — TURUN';
+    areaEl.innerHTML = '';
+
+    const qDiv = document.createElement('div');
+    qDiv.className = 'q-block';
+    qDiv.innerHTML = `
+      <div class="q-text"><span class="fc-icon fc-diamond" style="width:14px;height:14px;"></span> Panggilan f(${n}): apakah n = 0?</div>
+      <div class="opts">
+        <button class="opt-btn" data-v="ya">Ya, n = 0</button>
+        <button class="opt-btn" data-v="tidak">Tidak, n ≠ 0</button>
+      </div>
+      <div class="attempt-tag" id="recsim-tag"></div>
+      <div class="explain" id="recsim-explain"></div>`;
+    areaEl.appendChild(qDiv);
+
+    const buttons = qDiv.querySelectorAll('.opt-btn');
+    const tagEl = qDiv.querySelector('#recsim-tag');
+    const explainEl = qDiv.querySelector('#recsim-explain');
+    const correctV = (n === 0) ? 'ya' : 'tidak';
+
+    buttons.forEach(b=>{
+      b.addEventListener('click', ()=>{
+        if(qDiv.dataset.locked) return;
+        const attempts = (parseInt(qDiv.dataset.attempts || '0') + 1);
+        qDiv.dataset.attempts = attempts;
+        const isCorrect = b.dataset.v === correctV;
+
+        if(isCorrect || attempts >= ATTEMPT_CAP){
+          qDiv.dataset.locked = '1';
+          buttons.forEach(bb=>bb.disabled = true);
+          buttons.forEach(bb=>{ if(bb.dataset.v === correctV) bb.classList.add('correct'); });
+          if(!isCorrect) b.classList.add('wrong');
+          addScore('algoritma', isCorrect);
+          logAttempt('algoritma', `Simulasi rekursi — Fase Turun f(${n})`, attempts, isCorrect ? 'benar' : 'gagal');
+          tagEl.textContent = isCorrect ? `✓ Benar — Percobaan ke-${attempts}` : `✗ Batas percobaan tercapai`;
+          tagEl.className = 'attempt-tag show ' + (isCorrect ? 'ok':'bad');
+
+          if(n === 0){
+            explainEl.textContent = 'Ini langkah basis! f(0) langsung diketahui nilainya = 3. Sekarang saatnya NAIK dan menghitung nilai baliknya satu per satu.';
+            updateCard(0, 'f(0) = 3');
+          } else {
+            explainEl.textContent = `Belum sampai basis — program harus memanggil f(${n-1}) dulu sebelum bisa menghitung f(${n}).`;
+          }
+          explainEl.classList.add('show');
+
+          setTimeout(()=>{
+            turunIdx++;
+            if(turunIdx < turunOrder.length){
+              askTurun();
+            } else {
+              askNaik();
+            }
+          }, 900);
+        } else {
+          b.classList.add('wrong'); b.disabled = true;
+          tagEl.textContent = `✗ Belum tepat — Percobaan ke-${attempts}, coba lagi (maks ${ATTEMPT_CAP}×)`;
+          tagEl.className = 'attempt-tag show bad';
+        }
+      });
+    });
+  }
+
+  let childVal = 3; // nilai f(0), dipakai sebagai basis perhitungan naik
+
+  function askNaik(){
+    phaseEl.textContent = 'FASE 2 — NAIK';
+    if(naikIdx >= naikOrder.length){
+      areaEl.innerHTML = `<div class="feedback-tag ok" style="font-size:14px;">🎉 Selesai! f(${FUNC_N}) = ${childVal}</div>`;
+      return;
+    }
+    const n = naikOrder[naikIdx];
+    areaEl.innerHTML = `
+      <div class="fill-row">
+        <span style="font-family:var(--font-display);">f(${n}) = 2×f(${n-1})+4 = 2×${childVal}+4 =</span>
+        <input type="number" id="recsim-in">
+        <button class="check-btn" id="recsim-check">Cek</button>
+        <span class="feedback-tag" id="recsim-fb"></span>
+      </div>`;
+    const btn = document.getElementById('recsim-check');
+    const input = document.getElementById('recsim-in');
+    const fb = document.getElementById('recsim-fb');
+    const answer = 2*childVal + 4;
+
+    btn.addEventListener('click', ()=>{
+      if(btn.disabled) return;
+      const attempts = (parseInt(btn.dataset.attempts || '0') + 1);
+      btn.dataset.attempts = attempts;
+      const val = parseInt(input.value);
+      const ok = val === answer;
+
+      if(ok || attempts >= ATTEMPT_CAP){
+        btn.disabled = true; input.disabled = true;
+        addScore('algoritma', ok);
+        logAttempt('algoritma', `Simulasi rekursi — Fase Naik f(${n})`, attempts, ok ? 'benar' : 'gagal');
+        fb.textContent = ok ? `✓ Benar — Percobaan ke-${attempts}` : `✗ Jawaban: ${answer} (batas ${attempts}× percobaan)`;
+        fb.className = 'feedback-tag ' + (ok?'ok':'bad');
+        updateCard(n, `f(${n}) = ${answer}`);
+        childVal = answer;
+        setTimeout(()=>{ naikIdx++; askNaik(); }, 700);
+      } else {
+        fb.textContent = `✗ Coba lagi — Percobaan ke-${attempts} (maks ${ATTEMPT_CAP}×)`;
+        fb.className = 'feedback-tag bad';
+      }
+    });
+  }
+
+  askTurun();
 })();
 
 renderMCQ(document.getElementById('quiz-algoritma'), [
